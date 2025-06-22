@@ -30,11 +30,16 @@ const NewsItem = ({ id }: { id: String }) => {
   const [story, setStory] = useState<Story>();
   const [author, setAuthor] = useState<Author>();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json")
-      .then((response) => response.json())
-      .then((data) => setStory(data));
+    try {
+      fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json")
+        .then((response) => response.json())
+        .then((data) => setStory(data));
+    } catch (error) {
+      setIsError(true);
+    }
   }, []);
 
   const handleClick = () => {
@@ -47,8 +52,10 @@ const NewsItem = ({ id }: { id: String }) => {
   };
 
   return (
-    <div onClick={handleClick}>
-      {!isExpanded ? (
+    <div className="list-item" onClick={handleClick}>
+      {isError ? (
+        <p>Error loading</p>
+      ) : !isExpanded ? (
         <div>
           <h1>Title: {story?.title}</h1>
           <p>Url: {story?.url}</p>

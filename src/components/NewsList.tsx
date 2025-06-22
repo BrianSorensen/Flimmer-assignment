@@ -3,11 +3,18 @@ import NewsItem from "./NewsItem";
 
 const NewsList = () => {
   const [data, setData] = useState<any[]>([]);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
-      .then((response) => response.json())
-      .then((data) => setData(data.splice(0, 20)));
+    try {
+      fetch(
+        "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+      )
+        .then((response) => response.json())
+        .then((data) => setData(data.splice(0, 20)));
+    } catch (error) {
+      setIsError(true);
+    }
   }, []);
 
   const listItems = data.map((item) => (
@@ -15,8 +22,8 @@ const NewsList = () => {
   ));
 
   return (
-    <div>
-      <ul>{listItems}</ul>
+    <div className="news-list">
+      {isError ? <p>Error loading</p> : <ul>{listItems}</ul>}
     </div>
   );
 };

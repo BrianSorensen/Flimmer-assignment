@@ -1,2 +1,12 @@
 .App {
 }
+
+.news-list{
+  width:50%;
+}
+
+.list-item{
+  margin:40px;
+  cursor:pointer;
+}
+

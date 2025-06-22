@@ -1,3 +1,20 @@
+# Hacker News reader for Flimmer assignment.
+
+This is a basic app for showing a list of news and aditional meta-data.
+
+## Architectural decisions and trade-offs
+
+Hand coded data fetching logic, to show some actual coding.
+
+The hacker news API CORS policy prevents requesting data with async calls.
+
+## Ideas for improvement
+
+BaseUrl const instead of hardcoded urls.
+Use ReactQuery or simular for fetching data, wich will add more functionality e.g caching.
+Develop custom fetching hook if same data is needed at multiple components.
+re-styling of app and components.
+
 ### Available Scripts
 
 In the project directory, you can run:
