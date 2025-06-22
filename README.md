@@ -1,8 +1,8 @@
 # Hacker News reader for Flimmer assignment.
 
-# App is live here on Github pages:
+# App is live here:
 
-https://briansorensen.github.io/Flimmer-assignment/
+https://fiduzen.dk/flimmertest/
 
 This is a basic app for showing a list of news and aditional meta-data.
 
