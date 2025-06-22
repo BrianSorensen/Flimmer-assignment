@@ -1,5 +1,9 @@
 # Hacker News reader for Flimmer assignment.
 
+# App is live here on Github pages:
+
+https://briansorensen.github.io/Flimmer-assignment/
+
 This is a basic app for showing a list of news and aditional meta-data.
 
 ## Architectural decisions and trade-offs
