@@ -1,31 +1,17 @@
-import { useEffect, useState } from "react";
+import { useFetchStories } from "../hooks/useFetchStories";
 import NewsItem from "./NewsItem";
 
-const NewsList = () => {
-  const [data, setData] = useState<any[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
+function NewsList() {
+  const { stories } = useFetchStories(20);
 
-  useEffect(() => {
-    try {
-      fetch(
-        "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
-      )
-        .then((response) => response.json())
-        .then((data) => setData(data.splice(0, 20)));
-    } catch (error) {
-      setIsError(true);
-    }
-  }, []);
-
-  const listItems = data.map((item) => (
-    <NewsItem id={item} key={item}></NewsItem>
-  ));
+  stories?.sort((a, b) => a.score - b.score);
 
   return (
     <div className="news-list">
-      {isError ? <p>Error loading</p> : <ul>{listItems}</ul>}
+      {stories &&
+        stories.map((item) => <NewsItem story={item} key={item.id}></NewsItem>)}
     </div>
   );
-};
+}
 
 export default NewsList;

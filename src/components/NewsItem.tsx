@@ -1,79 +1,100 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Author, Story } from "../hooks/useFetchStories";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
-interface Story {
-  id: string;
-  deleted: boolean;
-  type: string;
-  by: string;
-  time: number;
-  text: string;
-  dead: boolean;
-  parent: string;
-  poll: string;
-  kids: string[];
-  url: string;
-  score: number;
-  title: string;
-  parts: string[];
-  descendants: number;
-}
-
-interface Author {
-  id: string;
-  created: number;
-  karma: number;
-  about: string;
-  submitted: string[];
-}
-
-const NewsItem = ({ id }: { id: String }) => {
-  const [story, setStory] = useState<Story>();
+function NewsItem({ story }: { story: Story }) {
   const [author, setAuthor] = useState<Author>();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
 
-  useEffect(() => {
-    try {
-      fetch("https://hacker-news.firebaseio.com/v0/item/" + id + ".json")
-        .then((response) => response.json())
-        .then((data) => setStory(data));
-    } catch (error) {
-      setIsError(true);
-    }
-  }, []);
-
-  const handleClick = () => {
+  function handleClick() {
     if (!isExpanded) {
       setIsExpanded(true);
       fetch("https://hacker-news.firebaseio.com/v0/user/" + story?.by + ".json")
         .then((response) => response.json())
         .then((data) => setAuthor(data));
     }
-  };
+  }
 
   return (
-    <div className="list-item" onClick={handleClick}>
-      {isError ? (
-        <p>Error loading</p>
-      ) : !isExpanded ? (
-        <div>
-          <h1>Title: {story?.title}</h1>
-          <p>Url: {story?.url}</p>
-          <p>Author: {story?.by}</p>
-          <p>Score: {story?.score}</p>
-        </div>
-      ) : (
-        <div>
-          <h1>Title: {story?.title}</h1>
-          <div> {story?.text} </div>
-          <a href={story?.url}>Url: {story?.url}</a>
-          <p>Author: {story?.by}</p>
-          <p>Score: {story?.score}</p>
-          <p>Karma: {!author?.karma ? "Loading" : author?.karma}</p>
-        </div>
-      )}
-    </div>
+    <Box sx={{ minWidth: 275, maxWidth: 600 }}>
+      <Card variant="outlined" sx={{ cursor: "pointer" }}>
+        <CardContent onClick={handleClick}>
+          {!isExpanded ? (
+            <div>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.primary", fontSize: 18 }}
+              >
+                Title: {story?.title}
+              </Typography>
+
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Url: {story?.url}
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Author: {story?.by}
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Score: {story?.score}
+              </Typography>
+            </div>
+          ) : (
+            <div>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.primary", fontSize: 18 }}
+              >
+                Title: {story?.title}
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 12 }}
+              >
+                <div> {story?.text} </div>
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Url: <a href={story?.url}>{story?.url}</a>
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                <p>Author: {story?.by}</p>
+              </Typography>
+
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Score: {story?.score}
+              </Typography>
+              <Typography
+                gutterBottom
+                sx={{ color: "text.secondary", fontSize: 14 }}
+              >
+                Karma: {!author?.karma ? "Loading" : author?.karma}
+              </Typography>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </Box>
   );
-};
+}
 
 export default NewsItem;
